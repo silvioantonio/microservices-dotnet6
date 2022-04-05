@@ -10,14 +10,29 @@ namespace GeekShopping.web.Services
 
         public const string BasePath = "api/v1/product";
 
-        public Task<ProductModel> CreateProduct(ProductModel product)
+        public ProductService(HttpClient client)
         {
-            throw new NotImplementedException();
+            _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public Task<bool> DeleteProductById(int id)
+        public async Task<ProductModel> CreateProduct(ProductModel product)
         {
-            throw new NotImplementedException();
+            var response = await _client.PostAsJson(BasePath, product);
+            if (response.IsSuccessStatusCode) 
+            {
+                return await response.ReadContentAs<ProductModel>();
+            }
+            throw new Exception("Something went wrong when calling API");
+        }
+
+        public async Task<bool> DeleteProductById(int id)
+        {
+            var response = await _client.DeleteAsync($"{BasePath}/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<bool>();
+            }
+            throw new Exception("Something went wrong when calling API");
         }
 
         public async Task<IEnumerable<ProductModel>> FindAllProducts()
@@ -32,9 +47,14 @@ namespace GeekShopping.web.Services
             return await response.ReadContentAs<ProductModel>();
         }
 
-        public Task<ProductModel> UpdateProduct(ProductModel product)
+        public async Task<ProductModel> UpdateProduct(ProductModel product)
         {
-            throw new NotImplementedException();
+            var response = await _client.PutAsJson(BasePath, product);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.ReadContentAs<ProductModel>();
+            }
+            throw new Exception("Something went wrong when calling API");
         }
     }
 }
