@@ -47,8 +47,15 @@ namespace GeekShopping.ProductAPI.Repository
 
         public async Task<IEnumerable<ProductVO>> FindAll()
         {
-            List<Product> products = await _context.Products.ToListAsync(); ;
-            return _mapper.Map<List<ProductVO>>(products);
+            try
+            {
+                List<Product> products = await _context.Products.ToListAsync();
+                return _mapper.Map<List<ProductVO>>(products);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<ProductVO> FindById(int id)
