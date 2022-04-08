@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<GeekShopping.web.Models.ProductModel>
-
  
 <div class="container p-4 border">
     <div class="row pb-2">
@@ -28,12 +27,13 @@
                     <td>@item.CategoryName</td>
                     <td>@((item.Price).ToString("c"))</td>
                     <td>
-                        <a asp-action="ProductEdit" class="btn btn-outline-success" asp-route-id="@item.Id"> 
+                        <a asp-action="ProductUpdate" class="btn btn-outline-success" asp-route-id="@item.Id"> 
                             <i class="fa fa-pen-to-square"></i>
                         </a>
-                        <a asp-action="ProductDelete" class="btn btn-outline-danger" asp-route-id="@item.Id"> 
+                        <button type="submit" asp-action="ProductDelete" asp-route-id="@item.Id"
+                        class="btn btn-outline-danger">
                             <i class="fa fa-trash-can"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             }
